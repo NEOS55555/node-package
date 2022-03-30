@@ -1,0 +1,48 @@
+.tab-wrapper {
+  ul {
+    // border-radius: ;
+    font-size: 0;
+    border: 2px solid #99a0aa;
+    padding: px2vw(10);
+    border-radius: px2vw(82);
+    display: flex;
+    li {
+      padding: px2vw(10) px2vw(20);
+      border-radius: px2vw(62);
+      &.active {
+        // background-color: #009298;
+        background: linear-gradient(
+          132deg,
+          rgba(0, 245, 221, 0.8) 0%,
+          #0056b7 100%
+        );
+      }
+      span {
+        color: #fff;
+        font-size: px2vw(32);
+        display: inline-block;
+      }
+    }
+  }
+
+  &.normal {
+    ul {
+      border: none;
+      li {
+        border: none;
+        border-radius: 0;
+        &.active {
+          background: transparent;
+          border-bottom: 1px solid;
+          border-image-source: linear-gradient(
+            90deg,
+            #fff 0%,
+            #fff 50%,
+            #fff 0%
+          );
+          border-image-slice: 1;
+        }
+      }
+    }
+  }
+}

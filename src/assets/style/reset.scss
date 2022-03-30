@@ -1,0 +1,85 @@
+html,
+body,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+hr,
+p,
+blockquote,
+dl,
+dt,
+dd,
+ul,
+ol,
+li,
+pre,
+form,
+fieldset,
+legend,
+button,
+input,
+textarea,
+th,
+td  {
+  margin: 0;
+  padding: 0;
+}
+
+html,
+body,
+.home-page {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+}
+/* .home-page {
+  background: url($resource-url+'images/home/bg.png');
+  // background: url('../images/bg.png');
+} */
+.container {
+  height: calc(100% - #{$headerHeight});
+}
+
+ul,
+li {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+body {
+  .el-message {
+    font-size: 42px;
+    .el-message__content {
+      font-size: 32px;
+    }
+  }
+}
+body {
+  -webkit-text-size-adjust: 100% !important;
+}
+
+.pre-title {
+  &::before {
+    @include borcolor('left');
+  }
+  line-height: 1;
+  position: relative;
+  padding-left: 10px;
+  font-size: 20px;
+  color: #fff;
+}
+
+.vert-middle {
+  &::after {
+    content: '';
+    display: inline-block;
+    vertical-align: middle;
+    width: 0;
+    height: 100%;
+  }
+}

@@ -1,0 +1,31 @@
+.control-btn-list {
+  display: flex;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  line-height: 1;
+  align-items: center;
+  li {
+    // display: inline-block;
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    // display: flex;
+    .icon {
+      // width: px2vw(82);
+      // &.active {
+      &:active {
+        background-image: url('#{$resource-url}images/padmng/point/is-active.png');
+        background-size: 100% 100%;
+      }
+    }
+    .name {
+      // margin-top: px2vh(10);
+      // font-size: px2vw(20);
+      color: #fff;
+    }
+    /* &:not(:last-child) {
+      margin-right: px2vw(86);
+    } */
+  }
+}

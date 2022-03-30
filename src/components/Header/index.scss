@@ -1,0 +1,28 @@
+.header {
+  // padding: px2vh(30) px2vw(42);
+  display: flex;
+  justify-content: center;
+  position: relative;
+  // height: $headerHeight;
+  // line-height: $headerHeight;
+  text-align: center;
+  font-size: 0;
+  // background-image: url('../../../public/images/home/logo.png');
+  // background-position: center 0;
+  // background-size: auto 100%;
+
+  .logo-name {
+    height: px2vh(72);
+    // display: inline-block;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin: auto;
+  }
+}
+/* .home-page {
+  // background: url($resource-url+'images/home/bg.png');
+  background: url('../../../public/images/home/bg.png');
+} */

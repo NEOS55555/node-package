@@ -1,0 +1,33 @@
+.home-page {
+  .container {
+    // padding: px2vh(40);
+
+    .top-ctn {
+      position: relative;
+      font-size: 0;
+      height: px2vh(80);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      .select-list {
+        position: absolute;
+        right: 0;
+        top: 0;
+        $selectHeight: px2vh(60);
+        /deep/.el-input__inner {
+          height: $selectHeight;
+          line-height: $selectHeight;
+          font-size: px2vw(28);
+          background-color: transparent;
+          border-radius: 30px;
+          color: #fff;
+        }
+        /deep/.el-input__icon {
+          height: $selectHeight;
+          line-height: $selectHeight;
+          font-size: px2vw(28);
+        }
+      }
+    }
+  }
+}

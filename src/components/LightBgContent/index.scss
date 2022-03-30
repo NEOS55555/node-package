@@ -1,0 +1,71 @@
+.light-bg-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transform: scale(0.9);
+  .light-bg-ctn {
+    position: relative;
+    width: 1210px;
+    height: 800px;
+    .light-bg-mit {
+      position: absolute;
+      z-index: 1;
+    }
+    .light-bg-item {
+      position: absolute;
+      .bg-icon {
+        width: 100%;
+      }
+      .area-point {
+        width: px2vw(80);
+        height: px2vw(68);
+        background: url('../../../public/images/point/point.png');
+        background-size: 100% 100%;
+        position: absolute;
+        top: 0;
+        right: 0;
+      }
+      .position-tip {
+        font-size: 24px;
+        color: #fff;
+        background-size: 100% 100%;
+        text-align: center;
+        width: 201px;
+        height: 171px;
+        line-height: 70px;
+        position: absolute;
+        top: -200%;
+        right: 0;
+        background-image: url(../../../public/images/light/rect6.png);
+      }
+      /* &.zoom4 {
+        left: 652px;
+        top: 41px;
+        width: 558px;
+      }
+      &.zoom3 {
+        left: 452px;
+        top: 169px;
+        width: 471px;
+      }
+      &.zoom2 {
+        left: 0;
+        top: 300px;
+        width: 552px;
+      }
+      &.zoom1 {
+        left: 319px;
+        top: 342px;
+        width: 703px;
+      }
+      &.zoom5 {
+        left: 219px;
+        top: 587px;
+        width: 494px;
+        .position-tip {
+          right: 171px;
+        }
+      } */
+    }
+  }
+}

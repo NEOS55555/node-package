@@ -1,0 +1,44 @@
+.data-show-box {
+  width: px2vw(856);
+  height: px2vh(462);
+  background: url('../../../assets/images/dataShow/rect.png');
+  background-size: 100% 100%;
+  $tipmarRight: px2vw(140);
+  $tHeight: px2vh(50);
+  $thmar: px2vh(5);
+  .title {
+    font-size: px2vw(26);
+    color: #fff;
+    margin-left: $tipmarRight;
+    line-height: $tHeight;
+    text-align: left;
+    margin-bottom: $thmar;
+  }
+  .data-ctn {
+    height: calc(100% - #{$tHeight} - #{$thmar});
+  }
+  &.right {
+    .title {
+      margin-right: $tipmarRight;
+      text-align: right;
+    }
+  }
+  &.top.right {
+    background: url('../../../assets/images/dataShow/rect-top-right.png');
+    background-size: 100% 100%;
+  }
+  &.bottom.right {
+    background: url('../../../assets/images/dataShow/rect-bottom-right.png');
+    background-size: 100% 100%;
+  }
+  &.bottom.left {
+    background: url('../../../assets/images/dataShow/rect-bottom-left.png');
+    background-size: 100% 100%;
+  }
+  &.top-line {
+    background: url('../../../assets/images/dataShow/top-line.png');
+    background-size: 100% 100%;
+    width: px2vw(856 * 2 + 20);
+    margin-right: 0 !important;
+  }
+}
