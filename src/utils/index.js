@@ -274,14 +274,15 @@ export default {
 
   // 分组按钮点击
   groupBtnClick(btnArr, item, isHide) {
+    console.log(item);
     if (item.playType === "toggle") {
       item.active = !item.active;
       return;
     }
     item.toggleActive = !item.toggleActive;
-    if (item.active) {
+    /* if (item.active) {
       return;
-    }
+    } */
     if (item.disabled) {
       return;
     }
@@ -290,9 +291,10 @@ export default {
         if (it.group === item.group) {
           it.active = it.key === item.key;
           if (it.active && isHide) {
-            /* setTimeout(() => {
-              it.active = false
-            }, 200) */
+            setTimeout(() => {
+              console.log("abc", item);
+              it.active = false;
+            }, 200);
           }
         }
       });

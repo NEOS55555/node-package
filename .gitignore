@@ -3,9 +3,9 @@ node_modules
 /int
 /uat
 /dist
-/*.zip
 /cdn
-
+*.zip
+*.tar
 # local env files
 .env.local
 .env.*.local

@@ -68,7 +68,10 @@ export default {
     // list: Array
     defaultlist: Array,
     defaultitemScale: [Number, String],
-    isEmitChangeOnInit: Boolean,
+    isEmitChangeOnInit: {
+      type: Boolean,
+      default: true,
+    },
   },
   name: "BgCtnItem",
   components: { BottomLine },
@@ -99,14 +102,19 @@ export default {
   methods: {
     init() {
       if (this.isEmitChangeOnInit) {
-        this.$emit(
-          "change",
-          this.list.find((it) => it.active)
-        );
+        // console.log("this.list", this.list);
+        this.$nextTick(() => {
+          this.$emit("change", this.getActiveItem(true));
+        });
       }
     },
     getActiveItem(isf) {
-      return this.list.find((it) => it.active) || (isf && this.list[0]);
+      let item = this.list.find((it) => it.active);
+      if (!item && isf) {
+        this.list[0].active = true;
+        item = this.list[0];
+      }
+      return item;
     },
     updateData(obj) {
       for (const i in obj) {
@@ -164,8 +172,8 @@ export default {
       if (!this.isEdit) {
         return;
       }
-      console.log("this.actItem", this.actItem);
-      console.log("this.list", this.list);
+      // console.log("this.actItem", this.actItem);
+      // console.log("this.list", this.list);
       this.mouseupEvt(() => {
         this.$emit("moveover", {
           list: this.list.map((it) => ({
