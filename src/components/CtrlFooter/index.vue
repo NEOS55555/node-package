@@ -118,7 +118,22 @@ export default {
       });
     },
     btnChange(item) {
-      this.$emit("change", item);
+      // console.log("this.activeComp.showItem", item);
+      let params = {};
+      try {
+        params = JSON.parse(
+          item.ajaxParams.replace(/\$parentId/gi, item.parentId)
+        );
+      } catch (e) {
+      } finally {
+        this.$api.send(
+          { type: item.ajaxType, path: item.ajaxUrl },
+          {
+            params,
+          }
+        );
+        this.$emit("change", item);
+      }
     },
     mouseDown(e, moveProp) {
       this.moveProp = moveProp;

@@ -1,4 +1,9 @@
-const { mkdirSelf, writeFilePromise, saveFile } = require("./fslib");
+const {
+  mkdirSelf,
+  writeFilePromise,
+  saveFile,
+  deleteFolder,
+} = require("./fslib");
 const path = require("path");
 const { packageComponents, packageRouter, setPageName } = require("./dealstr");
 const { dealImgs } = require(".");
@@ -6,6 +11,7 @@ const { dealImgs } = require(".");
 function saveImgs(staticPath, pageList) {
   const imgArr = dealImgs(pageList);
   const comDirSrc = path.resolve(staticPath, "./public/images/common");
+  deleteFolder(comDirSrc);
   mkdirSelf(path.resolve(staticPath, "./public"));
   mkdirSelf(path.resolve(staticPath, "./public/images"));
   mkdirSelf(comDirSrc);

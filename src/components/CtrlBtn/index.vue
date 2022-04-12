@@ -11,7 +11,7 @@
       <img
         class="icon"
         :class="{ active: item.active }"
-        :src="item.src"
+        :src="item.active ? item.activeBackgroundSrc : item.backgroundSrc"
         :style="`width:${$util.px2vw(82 * finalscale)};`"
         alt=""
       />

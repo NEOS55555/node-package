@@ -167,31 +167,6 @@ function getLocalTime(timestamp) {
   );
 }
 
-// 获取区域信息
-const areaListPromise = $api.send($apiList.areaList, {}).then((res) => {
-  const list = res.data;
-  const areaList = [
-    {
-      key: "test",
-      name: "实验室",
-      areaId: list[0].id,
-      active: true,
-    },
-    {
-      key: "zhanting",
-      name: "展厅",
-      areaId: list[1].id,
-      active: false,
-    },
-    {
-      key: "meet",
-      name: "会议室",
-      areaId: list[2].id,
-      active: false,
-    },
-  ];
-  return areaList;
-});
 export default {
   /**
    * @author zhaopeng
@@ -274,25 +249,29 @@ export default {
 
   // 分组按钮点击
   groupBtnClick(btnArr, item, isHide) {
-    console.log(item);
+    // console.log(item);
+
     if (item.playType === "toggle") {
       item.active = !item.active;
       return;
     }
     item.toggleActive = !item.toggleActive;
-    /* if (item.active) {
+    if (item.active) {
       return;
-    } */
+    }
     if (item.disabled) {
       return;
     }
     if (!item.noChange) {
       btnArr.forEach((it) => {
+        if (it.active == null) {
+          this.$set(it, "active", false);
+        }
         if (it.group === item.group) {
           it.active = it.key === item.key;
           if (it.active && isHide) {
             setTimeout(() => {
-              console.log("abc", item);
+              // console.log("abc", item);
               it.active = false;
             }, 200);
           }
@@ -523,7 +502,5 @@ export default {
     }
     return murl;
   },
-  getAreaList() {
-    return areaListPromise;
-  },
+
 };

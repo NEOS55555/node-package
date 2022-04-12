@@ -97,7 +97,7 @@ axios.interceptors.response.use(
 function apiAxios (method = 'get', urlConfig, options = {}) {
   const def = {
     // baseUrl: ApiConst.REQCONFIG.BASEURL,
-    baseUrl: process.env.VUE_APP_SIGN,
+    // baseUrl: process.env.VUE_APP_SIGN,
     timeout: ApiConst.REQCONFIG.TIMEOUT,
     withCredentials: false,
     showErrorMsg: false,

@@ -6,6 +6,8 @@ node_modules
 /cdn
 *.zip
 *.tar
+/public/images/common
+/src/views/comp*.vue
 # local env files
 .env.local
 .env.*.local

@@ -114,8 +114,8 @@ export default {
   methods: {
     getActiveItem() {
       return {
-        areaId: this.areaId,
-        areaName: this.areaName,
+        id: this.areaId,
+        name: this.areaName,
         btns: this.btns,
       };
     },

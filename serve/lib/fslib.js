@@ -110,3 +110,69 @@ function getErrorObj(err) {
   };
   return obj;
 }
+
+// 删除文件
+function deleteFile(delPath, direct, cb) {
+  delPath = direct ? delPath : path.join(__dirname, delPath);
+  try {
+    /**
+     * @des 判断文件或文件夹是否存在
+     */
+    if (fs.existsSync(delPath)) {
+      fs.unlink(delPath, (err, res) => {
+        if (err) {
+          console.log("删除失败");
+          // return
+        }
+        cb && cb();
+      });
+    } else {
+      console.log("inexistence path：", delPath);
+    }
+  } catch (error) {
+    console.log("del error", error);
+  }
+}
+// 删除文件夹
+function deleteFolder(delPath) {
+  try {
+    if (fs.existsSync(delPath)) {
+      const delFn = function (address) {
+        const files = fs.readdirSync(address);
+        let delCount = 0;
+        const fileLength = files.length;
+        for (let i = 0; i < fileLength; i++) {
+          const dirPath = path.join(address, files[i]);
+          if (fs.statSync(dirPath).isDirectory()) {
+            delFn(dirPath);
+          } else {
+            deleteFile(dirPath, true, function () {
+              if (++delCount == fileLength - 1) {
+                try {
+                  fs.rmdirSync(address);
+                } catch (e) {}
+                delCount = 0;
+              }
+            });
+          }
+        }
+        if (fileLength === 0) {
+          try {
+            fs.rmdirSync(address);
+          } catch (e) {}
+        }
+        /**
+         * @des 只能删空文件夹
+         */
+        //
+      };
+      delFn(delPath);
+      return true;
+    } else {
+      console.log("do not exist: ", delPath);
+    }
+  } catch (error) {
+    console.log("del folder error", error);
+  }
+}
+exports.deleteFolder = deleteFolder;
