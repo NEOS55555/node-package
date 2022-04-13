@@ -1,6 +1,9 @@
-/cdn
+/int
+/uat
 /dist
+/cdn
 /node_modules
 /public/images/common
+/src/views/comp*.vue
 *.zip
 *.tar
