@@ -149,7 +149,7 @@ function deleteFolder(delPath) {
             deleteFile(dirPath, true, function () {
               if (++delCount == fileLength - 1) {
                 try {
-                  fs.rmdirSync(address);
+                  // fs.rmdirSync(address);
                 } catch (e) {}
                 delCount = 0;
               }
@@ -158,7 +158,7 @@ function deleteFolder(delPath) {
         }
         if (fileLength === 0) {
           try {
-            fs.rmdirSync(address);
+            // fs.rmdirSync(address);
           } catch (e) {}
         }
         /**

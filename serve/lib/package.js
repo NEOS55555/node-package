@@ -26,7 +26,7 @@ function saveImgs(staticPath, pageList) {
         .then((res) => {
           setTimeout(() => {
             intor(count + 1);
-          }, 800);
+          }, 200);
         })
         .catch((e) => {
           console.log(e);
