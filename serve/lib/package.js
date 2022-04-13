@@ -16,12 +16,17 @@ function saveImgs(staticPath, pageList) {
   mkdirSelf(path.resolve(staticPath, "./public/images"));
   mkdirSelf(comDirSrc);
   return new Promise((resolve) => {
-    (function intor(count) {
+    const srcmap = {}(function intor(count) {
       if (count >= imgArr.length) {
         resolve();
         return;
       }
       const { imgId, imgType, src } = imgArr[count];
+      if (srcmap[src]) {
+        return intor(count + 1);
+      } else {
+        srcmap[src] = true;
+      }
       saveFile(src, comDirSrc, imgId, imgType)
         .then((res) => {
           setTimeout(() => {
