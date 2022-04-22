@@ -1,39 +1,19 @@
 <template>
-  <div
-    class="tab-wrapper"
-    :style="`padding-left:${
-      isLeftRadius ? getItemHeight(circleWidth) : 0
-    };padding-right:${isRightRadius ? getItemHeight(circleWidth) : 0};`"
-  >
-    <div
-      v-if="isLeftRadius"
-      class="leftRadius"
-      :style="`height:${getItemHeight(
-        borderItemHeight + 10 * 2
-      )};width:${getItemHeight(
-        circleWidth
-      )};border-radius: ${getItemHeight()} 0 0 ${getItemHeight()};`"
-    ></div>
-    <div
-      v-if="isRightRadius"
-      class="rightRadius"
-      :style="`height:${getItemHeight(
-        borderItemHeight + 10 * 2
-      )};width:${getItemHeight(
-        circleWidth
-      )};border-radius: 0 ${getItemHeight()} ${getItemHeight()} 0;`"
-    ></div>
+  <div class="tab-wrapper" :style="``">
     <ul
-      :style="`padding: ${$util.px2vw(10 * finalscale)} 0;padding-left:${
-        isLeftRadius ? 0 : $util.px2vw(15)
-      };`"
+      :style="`padding: ${$util.px2vw(10 * finalscale)};border-radius:${
+        isLeftRadius
+          ? getItemHeight() + ' 0 0 ' + getItemHeight()
+          : isRightRadius
+          ? '0 ' + getItemHeight() + ' ' + getItemHeight() + ' 0'
+          : 0
+      }`"
+      :class="{ isLeftRadius: isLeftRadius, isRightRadius: isRightRadius }"
     >
       <li
         :class="{ active: isActive }"
         @click="liClick"
-        :style="`margin-left: -${getItemHeight(
-          circleWidth / 2
-        )};padding: 0 ${$util.px2vw(20 * finalscale)};
+        :style="`padding: 0 ${$util.px2vw(20 * finalscale)};
       border-radius: ${getItemHeight()};line-height:${getItemHeight()};height:${getItemHeight()};`"
       >
         <span :style="`font-size:${$util.px2vw(32 * finalscale)};`">{{

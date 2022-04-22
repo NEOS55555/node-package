@@ -1,27 +1,22 @@
 .tab-wrapper {
-  .rightRadius,
-  .leftRadius {
-    border: 2px solid #99a0aa;
-    position: absolute;
-  }
-  .leftRadius {
-    left: 0;
-    border-right: none;
-  }
-  .rightRadius {
-    right: 0;
-    border-left: none;
-  }
   ul {
     // border-radius: ;
     box-sizing: border-box;
     font-size: 0;
     border: 2px solid #99a0aa;
-    border-left-width: 0;
-    border-right-width: 0;
+    // border-left-width: 0;
+    // border-right-width: 0;
     // padding: px2vw(10);
     // border-radius: px2vw(82);
     display: flex;
+    &.isLeftRadius {
+      // border-left-width: 2px;
+      border-right: none;
+    }
+    &.isRightRadius {
+      // border-right-width: 2px;
+      border-left: none;
+    }
 
     li {
       /* padding: px2vw(10) px2vw(20);

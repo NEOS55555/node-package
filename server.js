@@ -5,19 +5,21 @@ const app = express();
 const bodyParser = require("body-parser");
 const { execute } = require("./serve/lib");
 const { packagezip } = require("./serve/lib/packagezip");
-const { mkdirSelf } = require("./serve/lib/fslib");
+const { mkdirSelf, copyFolder } = require("./serve/lib/fslib");
 
 const STATIC_FILE_PATH = path.resolve(__dirname, "./dist");
 const port = 1883;
 
-const CDN_PATH = path.resolve(__dirname, "./cdn");
+const PATH_CD = path.resolve(__dirname, "/app");
+const CDN_PATH = path.resolve(PATH_CD, "./cdn");
 const CDN_PACKAGE_PATH = path.resolve(CDN_PATH, "./package");
 
+mkdirSelf(PATH_CD);
 mkdirSelf(CDN_PATH);
 mkdirSelf(CDN_PACKAGE_PATH);
-
+// console.log("PATH_CD", PATH_CD);
 // app.use(express.static(STATIC_FILE_PATH));
-app.use("/abc", express.static(STATIC_FILE_PATH));
+// app.use("/abc", express.static(STATIC_FILE_PATH));
 app.use("/cdn", express.static(CDN_PATH));
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
@@ -35,8 +37,11 @@ app.all("*", function (req, res, next) {
 
 // 打包之后，压缩zip
 app.post("/package", (req, res) => {
-  const { pages } = req.body;
+  const { pages, appId } = req.body;
   console.log("pages", pages);
+  if (!appId) {
+    res.json({ success: false });
+  }
   web2package(__dirname, pages).then(() => {
     console.log("结构完整，开始打包");
     setTimeout(() => {
@@ -44,11 +49,16 @@ app.post("/package", (req, res) => {
         .then(() => {
           console.log("打包完成");
           const packagedir = path.resolve(CDN_PACKAGE_PATH, "./dist.zip");
+          // 复制进去
+          const abpath = path.resolve(CDN_PATH, "./" + appId);
+          copyFolder(STATIC_FILE_PATH, abpath, true);
+
           packagezip(packagedir, (archive) => {
             archive.directory(path.resolve(STATIC_FILE_PATH), false);
           })
             .then((r) => {
               console.log("package ov");
+
               res.json({
                 success: true,
                 path: "/cdn/package/dist.zip",
