@@ -79,7 +79,7 @@ export default {
   data() {
     return {
       itemScale: this.$util.getDefaultitemScale(this.defaultitemScale),
-      backgroundSrc: "",
+      backgroundSrc: this.defaultbackgroundSrc,
       maxWidth: "",
       list: this.defaultlist || [],
     };

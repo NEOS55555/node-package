@@ -16,7 +16,8 @@ const CDN_PACKAGE_PATH = path.resolve(CDN_PATH, "./package");
 mkdirSelf(CDN_PATH);
 mkdirSelf(CDN_PACKAGE_PATH);
 
-app.use(express.static(STATIC_FILE_PATH));
+// app.use(express.static(STATIC_FILE_PATH));
+app.use("/abc", express.static(STATIC_FILE_PATH));
 app.use("/cdn", express.static(CDN_PATH));
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());

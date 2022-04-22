@@ -3,8 +3,13 @@ exports.dealImgs = function (obj) {
   var arr = [];
   const imgList = ["png", "jpg", "jpeg", "gif"];
   let imgId = 0;
+  const srcmap = {};
+
   function isimg(config) {
     if (typeof config === "string" && config.slice(0, 4) === "http") {
+      if (srcmap[config]) {
+        return srcmap[config];
+      }
       const imgPointIndex = config.lastIndexOf(".");
       /* if (imgPointIndex == -1) {
         return;
@@ -15,6 +20,7 @@ exports.dealImgs = function (obj) {
       } */
       const item = { src: config, imgId: imgId++, imgType: "jpg" };
       arr.push(item);
+      srcmap[config] = item;
       return item;
     }
   }
@@ -23,10 +29,11 @@ exports.dealImgs = function (obj) {
     // console.log("config", config);
     if (typeof config === "object") {
       for (let i in config) {
+        // console.log("i", i);
         if (i.toLowerCase().indexOf("backgroundsrc") !== -1) {
           const item = isimg(config[i]);
           if (item) {
-            config[i] = `/images/common/${item.imgId}.${item.imgType}`;
+            config[i] = `./images/common/${item.imgId}.${item.imgType}`;
           }
         }
         getSrc(config[i]);

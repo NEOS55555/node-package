@@ -19,7 +19,8 @@
       .area-point {
         width: px2vw(80);
         height: px2vw(68);
-        background: url('../../../public/images/point/point.png');
+        // background: url('../../../public/images/point/point.png');
+        background: url(../../assets/images/point/point.png);
         background-size: 100% 100%;
         position: absolute;
         top: 0;

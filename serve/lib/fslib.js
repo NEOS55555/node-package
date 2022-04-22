@@ -91,6 +91,7 @@ exports.saveFile = function (
         );
       })
       .catch((err) => {
+        console.log("保存失败");
         reject(getErrorObj(err));
       });
   });
