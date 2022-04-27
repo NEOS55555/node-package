@@ -1,6 +1,14 @@
 <template>
   <div class="basic-comp-wrapper" @click="liClick">
     <img v-if="backgroundSrc" :src="backgroundSrc" alt="" />
+    <div class="iframe-ctn" v-if="iframeSrc">
+      <iframe
+        :src="iframeSrc"
+        frameborder="0"
+        sandbox="allow-forms allow-scripts allow-same-origin allow-popups"
+      ></iframe>
+      <div class="iframdrag" v-if="isshowDrag">点我拖动</div>
+    </div>
     <div
       v-if="title"
       class="title"
@@ -27,14 +35,17 @@ export default {
     defaultfontColor: String,
     defaultfontSize: [Number, String],
     defaultbackgroundSrc: String,
+    defaultiframeSrc: String,
     defaulttitlePosition: [Object, String],
   },
   data() {
     return {
+      isshowDrag: process.env.VUE_APP_PAD_PACKAGE != 1,
       title: this.defaulttitle,
       fontSize: this.defaultfontSize || 14,
       fontColor: this.defaultfontColor,
       backgroundSrc: this.defaultbackgroundSrc,
+      iframeSrc: this.defaultiframeSrc,
       titlePosition: this.defaulttitlePosition || {
         position: {
           x: 0,

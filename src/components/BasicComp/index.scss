@@ -8,4 +8,22 @@
     width: 100%;
     height: 100%;
   }
+  .iframe-ctn {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    iframe {
+      width: 100%;
+      height: 100%;
+    }
+    .iframdrag {
+      position: absolute;
+      left: 0;
+      top: 0;
+      cursor: move;
+      font-size: 14px;
+      background-color: #ccc;
+      color: #000;
+    }
+  }
 }
