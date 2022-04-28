@@ -1,5 +1,6 @@
 const { web2package } = require("./serve/lib/package");
 const path = require("path");
+const fs = require("fs");
 const express = require("express");
 const app = express();
 const bodyParser = require("body-parser");
@@ -37,11 +38,15 @@ app.all("*", function (req, res, next) {
 
 // 打包之后，压缩zip
 app.post("/package", (req, res) => {
-  const { pages, appId } = req.body;
+  const { pages, appId, appName } = req.body;
   console.log("pages", pages);
   if (!appId) {
     res.json({ success: false });
   }
+  fs.writeFileSync(
+    path.resolve(__dirname, "./appSetting.js"),
+    `exports.appName = \`${appName.replace(/\`/gi, "")}\``
+  );
   web2package(__dirname, pages).then(() => {
     console.log("结构完整，开始打包");
     setTimeout(() => {

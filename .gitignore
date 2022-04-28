@@ -6,6 +6,7 @@ node_modules
 /cdn
 *.zip
 *.tar
+appSetting.js
 /public/images/common
 /src/views/comp*.vue
 /src/router/config.js

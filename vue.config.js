@@ -1,9 +1,3 @@
-/*
- * @Descripttion:
- * @Author: liuchunhui
- * @Date: 2020-12-08 14:31:20
- * @LastEditTime: 2020-12-15 08:51:14
- */
 process.env.VUE_APP_REBUILDTIME = new Date(); // 版本时间戳
 console.log(process.env.NODE_ENV);
 
@@ -19,8 +13,13 @@ module.exports = {
     // }
   },
   chainWebpack: (config) => {
+    let title = "document";
+    try {
+      const { appName } = require("./appSetting");
+      title = appName;
+    } catch (e) {}
     config.plugin("html").tap((args) => {
-      args[0].title = "南京民生银行";
+      args[0].title = title;
       return args;
     });
   },
