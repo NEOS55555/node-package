@@ -8,6 +8,7 @@ node_modules
 *.tar
 /public/images/common
 /src/views/comp*.vue
+/src/router/config.js
 # local env files
 .env.local
 .env.*.local
