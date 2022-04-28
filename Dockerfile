@@ -3,6 +3,7 @@ FROM node:14.17.6
 
 # Create app directory
 RUN mkdir -p /home/Service
+RUN mkdir -p /cdn/package
 WORKDIR /home/Service
 
 # Bundle app source

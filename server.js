@@ -11,14 +11,12 @@ const { mkdirSelf, copyFolder } = require("./serve/lib/fslib");
 const STATIC_FILE_PATH = path.resolve(__dirname, "./dist");
 const port = 1883;
 
-const PATH_CD = path.resolve(__dirname, "/app");
-const CDN_PATH = path.resolve(PATH_CD, "./cdn");
+const CDN_PATH = path.resolve(__dirname, "./cdn");
 const CDN_PACKAGE_PATH = path.resolve(CDN_PATH, "./package");
 
-mkdirSelf(PATH_CD);
 mkdirSelf(CDN_PATH);
 mkdirSelf(CDN_PACKAGE_PATH);
-// console.log("PATH_CD", PATH_CD);
+console.log("CDN_PATH", CDN_PATH);
 // app.use(express.static(STATIC_FILE_PATH));
 // app.use("/abc", express.static(STATIC_FILE_PATH));
 app.use("/cdn", express.static(CDN_PATH));
