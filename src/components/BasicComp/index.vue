@@ -10,16 +10,20 @@
       <div class="iframdrag" v-if="isshowDrag">点我拖动</div>
     </div>
     <div
-      v-if="title"
+      v-if="finalTitle"
       class="title"
-      @mousedown="(e) => mouseDown(e, 'titlePosition')"
       :style="`font-size:${$util.px2vw(
+        fontSize * finalscale
+      )};color:${fontColor};`"
+    >
+      <!-- @mousedown="(e) => mouseDown(e, 'titlePosition')" -->
+      <!-- :style="`font-size:${$util.px2vw(
         fontSize * finalscale
       )};color:${fontColor};top:${$util.posi2xy(
         ((titlePosition || {}).position || {}).y
-      )};left:${$util.posi2xy(((titlePosition || {}).position || {}).x)}`"
-    >
-      <div v-for="(txt, idx) in finalTitle" :key="idx">{{ txt }}</div>
+      )};left:${$util.posi2xy(((titlePosition || {}).position || {}).x)}`" -->
+      <!-- <div v-for="(txt, idx) in finalTitle" :key="idx">{{ txt }}</div> -->
+      <span>{{ finalTitle }}</span>
     </div>
   </div>
 </template>
@@ -33,7 +37,8 @@ export default {
     scale: Number,
     defaulttitle: String,
     defaultfontColor: String,
-    defaultfontSize: [Number, String],
+    defaultfontSize: Number || String,
+    defaultajax: String || Object,
     defaultbackgroundSrc: String,
     defaultiframeSrc: String,
     defaulttitlePosition: [Object, String],
@@ -41,17 +46,19 @@ export default {
   data() {
     return {
       isshowDrag: process.env.VUE_APP_PAD_PACKAGE != 1,
+      ajax: this.defaultajax,
       title: this.defaulttitle,
+      ajaxTitle: "",
       fontSize: this.defaultfontSize || 14,
       fontColor: this.defaultfontColor,
       backgroundSrc: this.defaultbackgroundSrc,
       iframeSrc: this.defaultiframeSrc,
-      titlePosition: this.defaulttitlePosition || {
+      /* titlePosition: this.defaulttitlePosition || {
         position: {
           x: 0,
           y: 0,
         },
-      },
+      }, */
     };
   },
   created() {
@@ -59,11 +66,12 @@ export default {
   },
   mixins: [DragMoveMixin],
   mounted() {
+    this.getData();
     // this.getmenuList()
   },
   computed: {
     finalTitle() {
-      return this.title.split("\n");
+      return (this.title || "") + this.ajaxTitle;
     },
     finalscale() {
       return this.scale || 1;
@@ -74,9 +82,14 @@ export default {
       for (const i in obj) {
         this[i] = obj[i];
       }
+      this.getData();
     },
     liClick() {
       this.$emit("click");
+    },
+    async getData() {
+      // console.log("钱钱钱钱钱钱钱", this.ajax);
+      this.ajaxTitle = await this.$util.getAjaxResult(this.ajax);
     },
     mouseDown(e, moveProp) {
       this.moveProp = moveProp;

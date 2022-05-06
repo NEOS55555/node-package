@@ -44,6 +44,8 @@ function saveImgs(staticPath, pageList) {
 exports.web2package = function (staticPath, pageList) {
   return new Promise((resolve) => {
     setPageName(pageList);
+    deleteFolder(path.resolve(staticPath, "./src/views"));
+
     mkdirSelf(path.resolve(staticPath, "./src"));
     mkdirSelf(path.resolve(staticPath, "./src/router"));
     mkdirSelf(path.resolve(staticPath, "./src/views"));

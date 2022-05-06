@@ -118,7 +118,9 @@ function toitem(config) {
 
   var template = `<div style="position:absolute;width:${
     position.width
-  };height:${position.height};left:${position.left};top:${position.top};">
+  };height:${position.height};left:${position.left};top:${
+    position.top
+  };z-index:${position.zIndex};">
       <${config.component} ref="${
     config.component + "Ref" + config.codeIndex
   }"${getProps(config)}${getEvents(config)}></${config.component}>

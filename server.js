@@ -6,7 +6,7 @@ const app = express();
 const bodyParser = require("body-parser");
 const { execute } = require("./serve/lib");
 const { packagezip } = require("./serve/lib/packagezip");
-const { mkdirSelf, copyFolder } = require("./serve/lib/fslib");
+const { mkdirSelf, copyFolder, deleteFolder } = require("./serve/lib/fslib");
 
 const STATIC_FILE_PATH = path.resolve(__dirname, "./dist");
 const port = 1883;
@@ -33,6 +33,44 @@ app.all("*", function (req, res, next) {
   //让options尝试请求快速结束
   else next();
 });
+//
+const appSettingPath = path.resolve(__dirname, "./appSetting.js");
+
+// 打包代码
+function packagecode() {
+  const codepackagedir = path.resolve(CDN_PACKAGE_PATH, "./codedist.zip");
+
+  return packagezip(codepackagedir, (archive) => {
+    archive.directory(path.resolve(__dirname, "./src/router"), "router");
+    archive.directory(path.resolve(__dirname, "./src/views"), "views");
+    archive.directory(
+      path.resolve(__dirname, "./public/images/common"),
+      "public/images/common"
+    );
+    archive.file(appSettingPath, { name: "appSetting.js" });
+  }).then((r) => {
+    console.log("package ov");
+
+    return {
+      success: true,
+      path: "/cdn/package/codedist.zip",
+    };
+  });
+}
+// 打包静态资源
+function packagedist() {
+  const packagedir = path.resolve(CDN_PACKAGE_PATH, "./dist.zip");
+  return packagezip(packagedir, (archive) => {
+    archive.directory(path.resolve(STATIC_FILE_PATH), false);
+  }).then((r) => {
+    console.log("package ov");
+
+    return {
+      success: true,
+      path: "/cdn/package/dist.zip",
+    };
+  });
+}
 
 // 打包之后，压缩zip
 app.post("/package", (req, res) => {
@@ -42,7 +80,7 @@ app.post("/package", (req, res) => {
     res.json({ success: false });
   }
   fs.writeFileSync(
-    path.resolve(__dirname, "./appSetting.js"),
+    appSettingPath,
     `exports.appName = \`${appName.replace(/\`/gi, "")}\``
   );
   web2package(__dirname, pages).then(() => {
@@ -51,11 +89,23 @@ app.post("/package", (req, res) => {
       execute("npm run build")
         .then(() => {
           console.log("打包完成");
-          const packagedir = path.resolve(CDN_PACKAGE_PATH, "./dist.zip");
           // 复制进去
           const abpath = path.resolve(CDN_PATH, "./" + appId);
           copyFolder(STATIC_FILE_PATH, abpath, true);
 
+          Promise.all([packagecode(), packagedist()])
+            .then((resarr) => {
+              // console.log(resarr);
+              res.json({
+                success: true,
+                path: "/cdn/package/dist.zip",
+                codePath: "/cdn/package/codedist.zip",
+              });
+            })
+            .catch((e) => {
+              console.log("package err", e);
+            });
+          /* const packagedir = path.resolve(CDN_PACKAGE_PATH, "./dist.zip");
           packagezip(packagedir, (archive) => {
             archive.directory(path.resolve(STATIC_FILE_PATH), false);
           })
@@ -69,28 +119,7 @@ app.post("/package", (req, res) => {
             })
             .catch((e) => {
               console.log("package err", e);
-            });
-        })
-        .catch((err) => {
-          console.log("打包出错拉", err);
-          res.json({ success: false });
-        });
-    }, 1000);
-  });
-});
-
-app.post("/preview", (req, res) => {
-  const { pages } = req.body;
-  res.header("Access-Control-Allow-Origin", "*");
-  web2package(__dirname, pages).then(() => {
-    console.log("结构完整，开始打包");
-    setTimeout(() => {
-      execute("npm run build")
-        .then(() => {
-          console.log("打包完成");
-          res.json({
-            success: true,
-          });
+            }); */
         })
         .catch((err) => {
           console.log("打包出错拉", err);

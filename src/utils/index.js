@@ -1,8 +1,7 @@
 import { Message } from "element-ui";
-import $api from "@/api";
-import $apiList from "@/api/apiList";
 window.prevMckCode = "";
 const timeOutTime = 3 * 1000;
+const BRNO = 8907;
 
 function doubced(cb, timeout = 500) {
   let timmer = null;
@@ -84,7 +83,7 @@ function start() {
   data = data || {};
   if (toJavaFuncName === "submitFromWeb") {
     if (!(noBrno || data.brno)) {
-      data.brno = 1820;
+      data.brno = BRNO;
     }
   }
   // prevCb = cb
@@ -168,13 +167,57 @@ function getLocalTime(timestamp) {
 }
 
 export default {
-  /**
-   * @author zhaopeng
-   * 本地存储状态
-   * @param {} key
-   * @param {*} value
-   * @param {*} state
-   */
+  async getAjaxResult(ajax) {
+    const { ajaxType, ajaxUrl, ajaxParams, ajaxCallback } = ajax || {};
+    let res = "";
+    if (ajaxType && ajaxUrl) {
+      try {
+        res = await $api
+          .send(
+            { type: ajaxType, path: ajaxUrl },
+            {
+              params: this.getAjaxPrams(ajaxParams),
+            }
+          )
+          .then((dta) => {
+            return this.getAjaxCallback(ajaxCallback)(dta);
+            // this.paintBar(res || {});
+          });
+      } catch (e) {
+        console.log(e);
+      } finally {
+        // console.log("rrr", res);
+      }
+    } else {
+      res = this.getAjaxCallback(ajaxCallback)("") || "";
+    }
+    return res;
+  },
+  getAjaxPrams(ajaxParams) {
+    // const {ajaxUrl, ajaxType, ajaxParams } = ajax || {}
+    try {
+      ajaxParams = JSON.parse(ajaxParams);
+    } catch (e) {
+      ajaxParams = {};
+    } finally {
+      return ajaxParams;
+    }
+  },
+  getAjaxCallback(callbackStr = "") {
+    const idx = callbackStr.indexOf("{");
+    const lastidx = callbackStr.lastIndexOf("}");
+    if (idx > -1 && lastidx > -1) {
+      const str = callbackStr.slice(idx + 1, lastidx);
+      let func = function () {};
+      try {
+        func = new Function("res", str);
+      } catch (e) {
+      } finally {
+        return func;
+      }
+    }
+    return function () {};
+  },
   getDefaultitemScale(scale) {
     var num = parseFloat(scale);
     num = isNaN(num) ? 1 : num;
@@ -219,33 +262,6 @@ export default {
     return state[key];
   },
   getLocalTime,
-  /**
-   * @author caixiangyu
-   * 存储/删除登录名和密码
-   */
-  setLocalLogin(name, pwd, checked, value) {
-    if (!value) {
-      localStorage.removeItem("userName");
-      localStorage.removeItem("userPwd");
-      localStorage.removeItem("pasChecked");
-    } else {
-      localStorage.setItem("userName", name);
-      localStorage.setItem("userPwd", pwd);
-      localStorage.setItem("pasChecked", checked);
-    }
-  },
-
-  /**
-   * @author caixiangyu
-   * 获取登录名和密码
-   */
-  getLocalLogin() {
-    var name = localStorage.getItem("userName");
-    var pwd = localStorage.getItem("userPwd");
-    var checked = localStorage.getItem("pasChecked");
-    // console.log(name, pwd, checked)
-    return [name, pwd, checked];
-  },
 
   // 分组按钮点击
   groupBtnClick(btnArr, item, isHide) {
@@ -332,93 +348,7 @@ export default {
     };
     return throttled;
   },
-  // 发送中控指令
-  sendCtrlIndex(item, datmd) {
-    console.log("中控指令传过来的item", item, datmd);
-    const { scenceId, districtId, deviceId, otherClick, mac } = datmd;
-    const commandMap = {
-      // 投影仪
-      off: 1,
-      on: 2,
-      // 幕布
-      mbOff: 1,
-      mbOn: 2,
-      mbPause: 5,
-      // 音量
-      voiceAdd: 3,
-      voiceReduce: 4,
-    };
-    let mck = item.key;
-    if (mck.indexOf("ctrl-") === 0) {
-      mck = mck.replace("ctrl-", "");
-      if (mck.indexOf("voice") !== -1) {
-        const command = item.command;
-        const params = {
-          command,
-          idList: [deviceId],
-        };
-        console.log("音量发送指令", params);
-        // === 'ctrl-voiceReduce' ? 'VolumeDown' : 'VolumeUp'
-        $api
-          .send($apiList.equipmentSend, {
-            type: "json",
-            params,
-          })
-          .then((data) => {})
-          .catch((err) => {
-            this.$error(err.message);
-          });
-      } else {
-        const arr = ["mbOff", "mbOn"];
-        if (arr.indexOf(mck) !== -1) {
-          window.prevMckCode = mck;
-        }
-        console.log("mck", mck, item);
-        let value = "[0,0,1]";
-        if (["mbPause"].indexOf(mck) !== -1) {
-          if (item.active) {
-            value = "2";
-          } else {
-            if (window.prevMckCode) {
-              mck = window.prevMckCode;
-            } else {
-              value = "2";
-            }
-          }
-          // mck = item.active ? 'mbPause' : 'mbOn'
-        }
-        const params = {
-          command: commandMap[mck] + "",
-          deviceId: deviceId,
-          scence: scenceId,
-          districtId,
-          value: value, // 温度、亮度变化范围（格式[最小值,最大值]）
-        };
-        console.log("params", params);
-        $api
-          .send($apiList.equipmentControll, { params })
-          .then((data) => {})
-          .catch((err) => {
-            this.$error(err.message);
-          });
-      }
-    } else {
-      console.log("进来了么？？");
-      // this.$emit('liClick', item)
-      otherClick && otherClick(item);
-    }
-    if (mac) {
-      const operaparam = {
-        mac,
-        content: item.name,
-        operateTime: getLocalTime(Date.now()),
-      };
-      console.log("操作日志", operaparam);
-      $api.send($apiList.operateLog, {
-        params: operaparam,
-      });
-    }
-  },
+
   isDev() {
     return process.env.NODE_ENV === "development";
   },
@@ -458,21 +388,6 @@ export default {
       });
     });
   },
-  sendComd(path, config) {
-    $api.send(path, config).then((res) => {
-      if (res.code !== 0) {
-        Message({
-          type: "error",
-          message: res.message || "操作失败",
-        });
-        return;
-      }
-      Message({
-        type: "success",
-        message: res.message || "操作成功",
-      });
-    });
-  },
   evtLoop,
   setStateAndFirstActive(list, notSetFirst) {
     for (const item of list) {
@@ -502,5 +417,4 @@ export default {
     }
     return murl;
   },
-
 };

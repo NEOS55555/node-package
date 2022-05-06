@@ -71,6 +71,12 @@ export default {
     getItemHeight(w = 62) {
       return this.$util.px2vw(w * this.finalscale);
     },
+    disHighlight() {
+      this.isActive = false;
+    },
+    highlight() {
+      this.isActive = true;
+    },
     liClick() {
       this.$emit("click");
     },
