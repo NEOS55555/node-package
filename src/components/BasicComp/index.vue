@@ -89,7 +89,20 @@ export default {
     },
     async getData() {
       // console.log("钱钱钱钱钱钱钱", this.ajax);
-      this.ajaxTitle = await this.$util.getAjaxResult(this.ajax);
+      this.$util.getAjaxResult(this.ajax).then((res) => {
+        const { type, data } = res || {};
+        switch (type) {
+          case "txt":
+            this.ajaxTitle = data || "";
+            break;
+          case "img":
+            this.backgroundSrc = data || "";
+            break;
+          case "url":
+            this.iframeSrc = data || "";
+            break;
+        }
+      });
     },
     mouseDown(e, moveProp) {
       this.moveProp = moveProp;
