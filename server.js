@@ -128,5 +128,8 @@ app.post("/package", (req, res) => {
     }, 1000);
   });
 });
-
+/* app.get("/*", (req, res) => {
+  res.writeHead(200, { "Content-Type": "text/html" });
+  res.end('<html><body style="background:transparent;"></body></html>');
+}); */
 app.listen(port);
